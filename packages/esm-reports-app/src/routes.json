@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "extensions": [
+    {
+      "name": "home-reports-dashboard-link",
+      "component": "homeReportsLink",
+      "slot": "homepage-dashboard-slot",
+      "meta": {
+        "name": "reports",
+        "slot": "reports-dashboard-slot",
+        "title": "Reports"
+      },
+      "online": true,
+      "offline": true
+    },
+    {
+      "name": "root-reports-dashboard",
+      "slot": "reports-dashboard-slot",
+      "component": "rootReportsHome"
+    }
+  ],
+  "pages": []
+}

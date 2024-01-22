@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "extensions": [
+    {
+      "name": "hiv-art-trend-dashboard",
+      "component": "hivArtTreatmentDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "order": 21,
+      "meta": {
+        "slot": "patient-chart-hiv-art-treatment-dashboard-slot",
+        "path": "HIV & ART Treatment",
+        "layoutMode":"anchored"
+      }
+    },
+    {
+      "name": "hiv-art-dashboard",
+      "component": "hivArtTrendsDashboard",
+      "slot": "patient-chart-hiv-art-treatment-dashboard-slot",
+      "meta": {
+        "view": "HIV & ART Treatment",
+        "title": "HIV & ART Treatment",
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "home-hivcare-and-art-dashboard-link",
+      "component": "homeHIVCareAndARTLink",
+      "slot": "homepage-dashboard-slot",
+      "meta": {
+        "name": "hivcare-and-art",
+        "slot": "hivcare-and-art-dashboard-slot",
+        "title": "HIV Care and ART"
+      },
+      "online": true,
+      "offline": true
+    },
+    {
+      "name": "root-art-dashboard",
+      "slot": "hivcare-and-art-dashboard-slot",
+      "component": "rootHome"
+    }
+  ],
+  "pages": []
+}

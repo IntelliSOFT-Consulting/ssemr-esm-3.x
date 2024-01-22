@@ -1,0 +1,33 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+
+.homeContainer {
+    margin: spacing.$spacing-05 spacing.$spacing-09;
+}
+.dashboardCard{
+    margin: spacing.$spacing-05 0;
+}
+
+.header {
+    min-height: 5rem
+}
+.title {
+    @include type.type-style("heading-05");
+    color: colors.$gray-100;
+    margin: spacing.$spacing-03 0;
+}
+
+.subTitle{
+    @include type.type-style("body-01");
+    color: colors.$gray-70;
+    font-size: 1.2rem;
+}
+
+.dashboardCard{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: spacing.$spacing-07;
+    row-gap: spacing.$spacing-05;
+    justify-content: space-between;
+}
