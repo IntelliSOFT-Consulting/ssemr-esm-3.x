@@ -31,6 +31,16 @@ const HomeDashboard: React.FC<HomeDashboardProps> = () => {
           dashboardIcon={<UserActivity size={48} />}
         />
         <DashboardCard
+          label={t('dueForViralLoad', 'Due for Viral Load')}
+          count={42}
+          dashboardIcon={<EventSchedule size={48} />}
+        />
+        <DashboardCard
+          label={t('hivViralLoad', 'High Viral Load')}
+          count={22}
+          dashboardIcon={<WatsonHealthAiResultsVeryHigh size={48} />}
+        />
+        <DashboardCard
           label={t('missedAppointments', 'Missed appointments')}
           count={42}
           dashboardIcon={<EventSchedule size={48} />}
@@ -40,14 +50,6 @@ const HomeDashboard: React.FC<HomeDashboardProps> = () => {
           count={23}
           dashboardIcon={<ChangeCatalog size={48} />}
         />
-        <DashboardCard
-          label={t('hivViralLoad', 'High Viral Load')}
-          count={22}
-          dashboardIcon={<WatsonHealthAiResultsVeryHigh size={48} />}
-        />
-      </section>
-      <section className="appointments">
-        <ExtensionSlot name="hiv-art-dashboard-slot" />
       </section>
     </div>
   );

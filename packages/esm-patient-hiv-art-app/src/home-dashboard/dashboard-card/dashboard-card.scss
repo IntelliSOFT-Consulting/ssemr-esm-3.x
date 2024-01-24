@@ -33,6 +33,9 @@
     align-items: center;
 
     &> svg{
-        @include brand-03(fill)
+        @include brand-03(fill);
+        background-color: red;
+        border-radius: 50%;
+        padding: spacing.$spacing-02;
     }
 }

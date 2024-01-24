@@ -26,6 +26,7 @@
       "name": "home-hivcare-and-art-dashboard-link",
       "component": "homeHIVCareAndARTLink",
       "slot": "homepage-dashboard-slot",
+      "order": 0,
       "meta": {
         "name": "hivcare-and-art",
         "slot": "hivcare-and-art-dashboard-slot",
