@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './dashboard-card.scss';
+import React from "react";
+import styles from "./dashboard-card.scss";
 
 type DashboardCardProps = {
   label: string;
@@ -7,7 +7,11 @@ type DashboardCardProps = {
   dashboardIcon: React.ReactNode;
 };
 
-const DashboardCard: React.FC<DashboardCardProps> = ({ label, count, dashboardIcon }) => {
+const DashboardCard: React.FC<DashboardCardProps> = ({
+  label,
+  count,
+  dashboardIcon,
+}) => {
   return (
     <div className={styles.dashboardCardContainer}>
       <p className={styles.label}>{label}</p>
