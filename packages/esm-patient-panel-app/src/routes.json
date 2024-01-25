@@ -20,8 +20,8 @@
         "columns": 1,
         "columnSpan": 1,
         "slot": "patient-chart-care-panel-dashboard-slot",
-        "title": "Care panel summary",
-        "path": "Care panel"
+        "title": "Patient panel summary",
+        "path": "Patient Panel Summary"
       }
     },
     {

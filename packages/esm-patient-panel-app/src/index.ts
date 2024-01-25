@@ -8,10 +8,10 @@ import careProgramsComponent from './care-programs/care-programs.component';
 import deleteRegimenConfirmationDialogComponent from './regimen-editor/delete-regimen-modal.component';
 import regimenFormComponent from './regimen-editor/regimen-form.component';
 
-const moduleName = '@ssemr/esm-care-panel-app';
+const moduleName = '@ssemr/esm-patient-panel-app';
 
 const options = {
-  featureName: 'patient-care-panels',
+  featureName: 'patient-panels',
   moduleName,
 };
 
