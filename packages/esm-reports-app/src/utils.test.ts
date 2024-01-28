@@ -8,7 +8,7 @@ jest.mock("@openmrs/esm-framework", () => {
     isDesktop: jest
       .fn()
       .mockImplementation(
-        (layout) => layout === "small-desktop" || layout === "large-desktop"
+        (layout) => layout === "small-desktop" || layout === "large-desktop",
       ),
   };
 });

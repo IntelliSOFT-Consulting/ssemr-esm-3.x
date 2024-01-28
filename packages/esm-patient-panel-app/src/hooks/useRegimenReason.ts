@@ -1,5 +1,5 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
+import { openmrsFetch } from "@openmrs/esm-framework";
+import useSWR from "swr";
 
 interface RegimenReason {
   category: string;
@@ -12,10 +12,9 @@ interface Reason {
 
 export const useRegimenReason = () => {
   const regimenReasonUrl = `/ws/rest/v1/regimenReason`;
-  const { data, mutate, error, isLoading } = useSWR<{ data: { results: Array<RegimenReason> } }>(
-    regimenReasonUrl,
-    openmrsFetch,
-  );
+  const { data, error, isLoading } = useSWR<{
+    data: { results: Array<RegimenReason> };
+  }>(regimenReasonUrl, openmrsFetch);
 
   const regimenReason = data?.data?.results ? data?.data?.results : [];
   return { regimenReason, isLoading, error };

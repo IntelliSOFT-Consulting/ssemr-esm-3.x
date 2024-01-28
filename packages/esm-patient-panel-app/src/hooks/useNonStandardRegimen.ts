@@ -1,5 +1,5 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
+import { openmrsFetch } from "@openmrs/esm-framework";
+import useSWR from "swr";
 
 interface nonStandardRegimen {
   name: string;
@@ -8,10 +8,9 @@ interface nonStandardRegimen {
 
 export const useNonStandardRegimen = () => {
   const nonStandardRegimenUrl = `/ws/rest/v1/arvDrugs`;
-  const { data, mutate, error, isLoading } = useSWR<{ data: { results: Array<nonStandardRegimen> } }>(
-    nonStandardRegimenUrl,
-    openmrsFetch,
-  );
+  const { data, error, isLoading } = useSWR<{
+    data: { results: Array<nonStandardRegimen> };
+  }>(nonStandardRegimenUrl, openmrsFetch);
 
   const nonStandardRegimen = data?.data?.results ? data?.data?.results : [];
   return { nonStandardRegimen, isLoading, error };

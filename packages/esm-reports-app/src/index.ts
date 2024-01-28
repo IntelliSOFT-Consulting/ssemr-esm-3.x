@@ -17,7 +17,7 @@ export const importTranslation = require.context(
   "../translations",
   false,
   /.json$/,
-  "lazy"
+  "lazy",
 );
 
 export function startupApp() {
@@ -26,10 +26,10 @@ export function startupApp() {
 
 export const rootReportsHome = getAsyncLifecycle(
   () => import("./root.component"),
-  options
+  options,
 );
 
 export const homeReportsLink = getSyncLifecycle(
   createHomeDashboardLink(homeDashboardMeta),
-  options
+  options,
 );

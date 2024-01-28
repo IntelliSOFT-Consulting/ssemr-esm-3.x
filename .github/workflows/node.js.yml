@@ -1,4 +1,4 @@
-name: SSEMR CI
+name: OpenMRS CI
 
 on:
   push:

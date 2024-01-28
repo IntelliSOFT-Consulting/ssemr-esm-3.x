@@ -14,7 +14,7 @@ function DashboardExtension({
   dashboardLinkConfig: DashboardLinkConfig;
 }) {
   const { t } = useTranslation();
-  const { name, title } = dashboardLinkConfig;
+  const { name } = dashboardLinkConfig;
   const location = useLocation();
   const spaBasePath = `${window.spaBase}/home`;
 

@@ -1,6 +1,7 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
+import { openmrsFetch } from "@openmrs/esm-framework";
+import useSWR from "swr";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface PatientRegimenReturnType {
   patientRegimen: RegimenHistory;
   isLoading: boolean;
@@ -20,10 +21,9 @@ interface RegimenHistory {
 
 export const useRegimenHistory = (patientUuid: string, code: string) => {
   const regimenHistoryHistoryUrl = `/openmrs/ws/fhir2/R4/Observation?patientUuid=${patientUuid}&code=${code}`;
-  const { data, mutate, error, isLoading } = useSWR<{ data: { results: Array<RegimenHistory> } }>(
-    regimenHistoryHistoryUrl,
-    openmrsFetch,
-  );
+  const { data, error, isLoading } = useSWR<{
+    data: { results: Array<RegimenHistory> };
+  }>(regimenHistoryHistoryUrl, openmrsFetch);
 
   const regimen = data?.data?.results ? data?.data?.results : [];
   return { regimen, isLoading, error };

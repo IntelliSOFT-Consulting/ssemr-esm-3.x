@@ -1,5 +1,5 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
+import { openmrsFetch } from "@openmrs/esm-framework";
+import useSWR from "swr";
 
 interface StandardRegimen {
   categoryCode: string;
@@ -19,10 +19,9 @@ interface Regimen {
 
 export const useStandardRegimen = () => {
   const standardRegimenUrl = `/ws/rest/v1/standardRegimen`;
-  const { data, mutate, error, isLoading } = useSWR<{ data: { results: Array<StandardRegimen> } }>(
-    standardRegimenUrl,
-    openmrsFetch,
-  );
+  const { data, error, isLoading } = useSWR<{
+    data: { results: Array<StandardRegimen> };
+  }>(standardRegimenUrl, openmrsFetch);
 
   const standardRegimen = data?.data?.results ? data?.data?.results : [];
   return { standardRegimen, isLoading, error };

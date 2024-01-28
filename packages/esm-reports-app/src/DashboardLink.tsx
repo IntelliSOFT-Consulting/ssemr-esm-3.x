@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
-import { ConfigurableLink } from "@openmrs/esm-framework";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import './dashboardLink.css';
+import "./dashboardLink.css";
 
 export interface DashboardLinkConfig {
   name: string;
@@ -39,9 +38,9 @@ function DashboardExtension({
         navLink.match(name) && "active-left-nav-link"
       }`}
       style={{
-        textAlign: 'left',
-        paddingLeft: '16px',
-        lineHeight: '2.5',
+        textAlign: "left",
+        paddingLeft: "16px",
+        lineHeight: "2.5",
         cursor: "pointer",
       }}
       onClick={handleClick}
@@ -52,9 +51,8 @@ function DashboardExtension({
 }
 
 export const createDashboardLink =
-  (dashboardLinkConfig: DashboardLinkConfig) => () =>
-    (
-      <BrowserRouter>
-        <DashboardExtension dashboardLinkConfig={dashboardLinkConfig} />
-      </BrowserRouter>
-    );
+  (dashboardLinkConfig: DashboardLinkConfig) => () => (
+    <BrowserRouter>
+      <DashboardExtension dashboardLinkConfig={dashboardLinkConfig} />
+    </BrowserRouter>
+  );

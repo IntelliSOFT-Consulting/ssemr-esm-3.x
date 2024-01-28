@@ -1,0 +1,18 @@
+{
+  "add": "Add",
+  "viralLoadAndCDTrend": "Viral load and CD4 trends",
+  "level": "LEVELS",
+  "loading": "Loading...",
+  "errorLoadingTrendsChart": "VL & CD4 Chart error",
+  "newClients": "New Clients",
+  "activeClients": "Active Clients",
+  "dueForViralLoad": "Due For Viral Load",
+  "hivViralLoad": "High Viral Load",
+  "missedAppointments": "Missed appointments",
+  "interruptedTreatments": "Interrupted Treatment",
+  "home": "Home",
+  "dashboard": "Dashboard",
+  "subPopulations": "Sub Populations",
+  "HIV Care & ART": "HIV Care & ART",
+  "HIV & ART Treatment": "HIV & ART Treatment"
+}
