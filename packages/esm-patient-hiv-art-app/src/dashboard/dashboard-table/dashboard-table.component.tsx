@@ -1,9 +1,22 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { DataTable, Table, TableHead, TableRow, TableHeader, TableBody, TableCell, Button } from '@carbon/react';
-import { Add } from '@carbon/react/icons';
-import { CardHeader, EmptyState, PatientChartPagination } from '@openmrs/esm-patient-common-lib';
-import { usePagination } from '@openmrs/esm-framework';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import {
+  DataTable,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+  TableCell,
+  Button,
+} from "@carbon/react";
+import { Add } from "@carbon/react/icons";
+import {
+  CardHeader,
+  EmptyState,
+  PatientChartPagination,
+} from "@openmrs/esm-patient-common-lib";
+import { usePagination } from "@openmrs/esm-framework";
 
 interface DashboardTableProps {
   patientUuid: string;
@@ -13,13 +26,24 @@ interface DashboardTableProps {
   dashboardTitle: string;
 }
 
-const DashboardTable: React.FC<DashboardTableProps> = ({ launchForm, tableHeaders, tableRows, dashboardTitle }) => {
+const DashboardTable: React.FC<DashboardTableProps> = ({
+  launchForm,
+  tableHeaders,
+  tableRows,
+  dashboardTitle,
+}) => {
   const { t } = useTranslation();
 
   const { results, currentPage, goTo } = usePagination(tableRows, 10);
 
   if (tableRows.length === 0) {
-    return <EmptyState displayText={dashboardTitle} headerTitle={dashboardTitle} launchForm={launchForm} />;
+    return (
+      <EmptyState
+        displayText={dashboardTitle}
+        headerTitle={dashboardTitle}
+        launchForm={launchForm}
+      />
+    );
   }
   return (
     <div>
@@ -27,10 +51,10 @@ const DashboardTable: React.FC<DashboardTableProps> = ({ launchForm, tableHeader
         <Button
           kind="ghost"
           renderIcon={(props) => <Add size={16} {...props} />}
-          iconDescription={t('add', 'Add')}
+          iconDescription={t("add", "Add")}
           onClick={() => launchForm()}
         >
-          {t('add', 'Add')}
+          {t("add", "Add")}
         </Button>
       </CardHeader>
       <DataTable rows={results} headers={tableHeaders}>
@@ -39,7 +63,9 @@ const DashboardTable: React.FC<DashboardTableProps> = ({ launchForm, tableHeader
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
+                  <TableHeader {...getHeaderProps({ header })}>
+                    {header.header}
+                  </TableHeader>
                 ))}
               </TableRow>
             </TableHead>

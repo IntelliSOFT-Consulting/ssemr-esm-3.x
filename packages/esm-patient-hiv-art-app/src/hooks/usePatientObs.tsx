@@ -23,15 +23,15 @@ interface Obs {
  */
 export const usePatientObs = (
   patientUuid: string,
-  conceptUuids: Array<string>
+  conceptUuids: Array<string>,
 ) => {
   const observationEndpoint = `${fhirBaseUrl}/Observation?subject:Patient=${patientUuid}&code=${conceptUuids.join(
-    ""
+    ",",
   )}`;
 
   const { data, error, isLoading, isValidating } = useSWR<{ data: Obs }>(
     observationEndpoint,
-    openmrsFetch
+    openmrsFetch,
   );
 
   const observedResults =

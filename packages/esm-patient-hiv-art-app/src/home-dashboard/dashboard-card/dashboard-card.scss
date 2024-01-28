@@ -15,6 +15,10 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+    &.customBorder {
+      border-color: var(--custom-border-color, transparent);
+    }
 }
 
 .label{
@@ -31,11 +35,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 
-    &> svg{
-        @include brand-03(fill);
-        background-color: red;
-        border-radius: 50%;
-        padding: spacing.$spacing-02;
+    &> .icon {
+      background-color: white;
+      color: white;
+      height: 4rem;
+      width: 4rem;
+      border-radius: 50%;
+      padding: spacing.$spacing-05;
+      top: 0.9rem;
+      left: 8.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 }

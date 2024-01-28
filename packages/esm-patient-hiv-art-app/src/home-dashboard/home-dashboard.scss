@@ -9,20 +9,6 @@
     margin: spacing.$spacing-05 0;
 }
 
-.header {
-    min-height: 5rem
-}
-.title {
-    @include type.type-style("heading-05");
-    color: colors.$gray-100;
-    margin: spacing.$spacing-03 0;
-}
-
-.subTitle{
-    @include type.type-style("body-01");
-    color: colors.$gray-70;
-    font-size: 1.2rem;
-}
 
 .dashboardCard{
     display: flex;
@@ -30,4 +16,36 @@
     column-gap: spacing.$spacing-07;
     row-gap: spacing.$spacing-05;
     justify-content: space-between;
+}
+
+.header {
+  @include type.type-style("heading-05");
+  color: colors.$gray-100;
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: 10px;
+    fill: #0072c3;
+    width: 3rem;
+    height: 5rem;
+  }
+
+  .titleContainer {
+    text-align: left;
+  }
+
+  .title{
+    @include type.type-style("heading-05");
+    color: colors.$gray-100;
+  }
+  .subTitle {
+    @include type.type-style("body-01");
+    color: colors.$gray-70;
+    margin: 0;
+  }
+}
+
+.tabs {
+  margin-top: 1rem;
 }

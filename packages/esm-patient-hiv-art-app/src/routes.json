@@ -26,18 +26,17 @@
       "name": "home-hivcare-and-art-dashboard-link",
       "component": "homeHIVCareAndARTLink",
       "slot": "homepage-dashboard-slot",
-      "order": 0,
       "meta": {
         "name": "hivcare-and-art",
         "slot": "hivcare-and-art-dashboard-slot",
-        "title": "HIV Care and ART"
+        "title": "Patient Visits"
       },
       "online": true,
       "offline": true
     },
     {
       "name": "root-art-dashboard",
-      "slot": "hivcare-and-art-dashboard-slot",
+      "slot": "homepage-widgets-slot",
       "component": "rootHome"
     }
   ],
