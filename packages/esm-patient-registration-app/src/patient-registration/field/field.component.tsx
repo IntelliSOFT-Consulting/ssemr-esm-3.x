@@ -24,7 +24,7 @@ export function Field({ name }: FieldProps) {
       `Invalid field name '${name}'. Valid options are '${config.fieldDefinitions
         .map((def) => def.id)
         .concat(builtInFields)
-        .join("', '")}'.`,
+        .join("', '")}'.`
     );
     return null;
   }
@@ -40,6 +40,7 @@ export function Field({ name }: FieldProps) {
           name={name}
           id={""}
           light={false}
+          props={undefined}
         />
       );
     case "gender":

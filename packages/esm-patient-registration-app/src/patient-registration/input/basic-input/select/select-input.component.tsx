@@ -17,15 +17,16 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   options,
   label,
   required,
+  onChange,
 }) => {
   const [field] = useField(name);
   const { t } = useTranslation();
-  const selectOptions = [
-    <SelectItem disabled hidden text={`Select ${label}`} key="" value="" />,
-    ...options.map((currentOption, index) => (
-      <SelectItem text={currentOption} value={currentOption} key={index} />
-    )),
-  ];
+  // const selectOptions = [
+  //   <SelectItem disabled hidden text={`Select ${label}`} key="" value="" />,
+  //   options?.map((currentOption, index) => (
+  //     <SelectItem text={currentOption} value={currentOption} key={index} />
+  //   )),
+  // ];
 
   const labelText = required
     ? label
@@ -34,8 +35,16 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   return (
     <div style={{ marginBottom: "1rem" }}>
       <Layer>
-        <Select id="identifier" {...field} labelText={labelText}>
-          {selectOptions}
+        <Select
+          onChange={onChange}
+          id="identifier"
+          {...field}
+          labelText={labelText}
+        >
+          <SelectItem disabled hidden text={`Select ${label}`} value="" />
+          {options?.map((option, index) => (
+            <SelectItem text={option} value={option} key={index} />
+          ))}
         </Select>
       </Layer>
     </div>

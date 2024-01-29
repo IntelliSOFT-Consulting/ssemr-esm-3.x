@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable no-console */
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Tile,
@@ -7,6 +8,9 @@ import {
   Button,
   Search,
   InlineLoading,
+  Select,
+  SelectItem,
+  TextInput,
 } from "@carbon/react";
 import { Input } from "../../input/basic-input/input/input.component";
 import { SelectInput } from "../../input/basic-input/select/select-input.component";
@@ -14,12 +18,18 @@ import styles from "./patient-unique-identifier.scss";
 import { showToast } from "@openmrs/esm-framework";
 import { FormikProps } from "formik";
 import { FormikValues } from "formik";
-import { states, facilities } from "./assets/identifier-assets";
+import { facilities } from "./assets/identifier-assets";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
+  id: string;
+  name: string;
+  labelText: string;
+  light: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  value?: string;
 }
-
 interface InputProps {
   id: string;
   name: string;
@@ -30,26 +40,58 @@ interface InputProps {
   value?: string;
 }
 
-export const PatientArtNumber: React.FC<InputProps> = () => {
+export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const { t } = useTranslation();
 
+  const states = Object.keys(facilities[0]);
   const [selectedState, setSelectedState] = useState<string>("State1");
   const [selectedFacility, setSelectedFacility] = useState<string>("");
-  const facilitiesForSelectedState = facilities[selectedState] || [];
+  const [artNumber, setArtNumber] = useState<string>("");
+  const [facilitiesForSelectedState, setfacilitiesForSelectedState] = useState<
+    string[]
+  >([""]);
+
+  const [combinedValue, setCombinedValue] = useState<string>("");
+
+  const Input = (props) => {
+    const handleChange = (event) => {
+      props.onChange(event);
+    };
+    return <TextInput {...props} onChange={handleChange} />;
+  };
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log("event", event);
     const newState = event.target.value;
     setSelectedState(newState);
-    // Reset facility when state changes
     setSelectedFacility("");
   };
 
   const handleFacilityChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const newFacility = event.target.value;
     setSelectedFacility(newFacility);
   };
+
+  const handleArtNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newArtNumber = event.target.value;
+    console.log("Art Number changed:", newArtNumber);
+    setArtNumber(newArtNumber);
+  };
+
+  useEffect(() => {
+    setCombinedValue(`${selectedFacility}${artNumber}`);
+  }, [selectedFacility, artNumber]);
+
+  //To-Do
+  useEffect(() => {
+    if (selectedState) {
+      setfacilitiesForSelectedState(facilities[0][selectedState]);
+    }
+  }, [selectedState]);
 
   return (
     <div id="patientIdentifier">
@@ -62,27 +104,39 @@ export const PatientArtNumber: React.FC<InputProps> = () => {
       <div>
         <Tile className={styles.wrapper}>
           <Layer>
-            <SelectInput
-              name="states"
-              options={states}
-              label={t("states", "State")}
-              required
-              onChange={handleStateChange}
+            <Select
               value={selectedState}
-            />
+              onChange={handleStateChange}
+              id="states"
+              labelText={t("states", "State")}
+            >
+              <SelectItem value="" text="" />
+              {states.map((state) => (
+                <SelectItem value={state} text={state} key={state} />
+              ))}
+            </Select>
           </Layer>
           <Layer>
-            <SelectInput
-              name="facility"
-              label={t("facility", "Facility")}
-              required
-              onChange={handleFacilityChange}
-              options={facilitiesForSelectedState}
+            <Select
               value={selectedFacility}
-            />
+              onChange={handleFacilityChange}
+              id="facility"
+              labelText={t("facilities", "Facilities")}
+            >
+              <SelectItem value="" text="" />
+              {facilitiesForSelectedState?.map((facility: any) => (
+                <SelectItem
+                  value={facility?.code}
+                  text={facility?.name}
+                  key={facility?.code}
+                />
+              ))}
+            </Select>
           </Layer>
           <Layer>
             <Input
+              value={artNumber}
+              onChange={handleArtNumberChange}
               id="artNumber"
               name="artNumber"
               labelText={t("number", "Number")}
@@ -92,6 +146,7 @@ export const PatientArtNumber: React.FC<InputProps> = () => {
           </Layer>
         </Tile>
       </div>
+      <div>ART Number: {combinedValue}</div>
     </div>
   );
 };

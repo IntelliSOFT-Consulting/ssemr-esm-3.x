@@ -32,7 +32,7 @@
         "title": "Patient Visits"
       },
       "online": true,
-      "offline": true
+      "offline": false
     },
     {
       "name": "root-art-dashboard",

@@ -9,6 +9,7 @@ import {
 
 export const uuidIdentifier = "05a29f94-c0ed-11e2-94be-8c13b969e334";
 export const uuidTelephoneNumber = "14d4f066-15f5-102d-96e4-000c29c2a5d7";
+export const uuidPatientArtNumber = "e6baf185-38ed-4815-9476-f98d2cc2b331";
 
 function dataURItoFile(dataURI: string) {
   const byteString = atob(dataURI.split(",")[1]);
@@ -26,7 +27,7 @@ function dataURItoFile(dataURI: string) {
 
 export function savePatient(
   patient: Patient | null,
-  updatePatientUuid?: string,
+  updatePatientUuid?: string
 ) {
   const abortController = new AbortController();
 
@@ -65,7 +66,7 @@ export function generateIdentifier(source: string) {
       method: "POST",
       body: {},
       signal: abortController.signal,
-    },
+    }
   );
 }
 
@@ -93,7 +94,7 @@ export function saveRelationship(relationship: Relationship) {
 
 export function updateRelationship(
   relationshipUuid,
-  relationship: { relationshipType: string },
+  relationship: { relationshipType: string }
 ) {
   const abortController = new AbortController();
 
@@ -124,7 +125,7 @@ export async function savePatientPhoto(
   content: string,
   url: string,
   date: string,
-  conceptUuid: string,
+  conceptUuid: string
 ) {
   const abortController = new AbortController();
 
@@ -138,7 +139,7 @@ export async function savePatientPhoto(
       concept: conceptUuid,
       groupMembers: [],
       obsDatetime: date,
-    }),
+    })
   );
 
   return openmrsFetch(url, {
@@ -179,7 +180,7 @@ export function usePatientPhoto(patientUuid: string): UsePatientPhotoResult {
 
   const { data, error, isLoading } = useSWR<{ data: ObsFetchResponse }, Error>(
     patientUuid ? url : null,
-    openmrsFetch,
+    openmrsFetch
   );
 
   const item = data?.data?.results[0];
@@ -198,7 +199,7 @@ export function usePatientPhoto(patientUuid: string): UsePatientPhotoResult {
 
 export async function fetchPerson(
   query: string,
-  abortController: AbortController,
+  abortController: AbortController
 ) {
   const [patientsRes, personsRes] = await Promise.all([
     openmrsFetch(`/ws/rest/v1/patient?q=${query}`, {
@@ -222,7 +223,7 @@ export async function fetchPerson(
 
 export async function addPatientIdentifier(
   patientUuid: string,
-  patientIdentifier: PatientIdentifier,
+  patientIdentifier: PatientIdentifier
 ) {
   const abortController = new AbortController();
   return openmrsFetch(`/ws/rest/v1/patient/${patientUuid}/identifier/`, {
@@ -238,7 +239,7 @@ export async function addPatientIdentifier(
 export async function updatePatientIdentifier(
   patientUuid: string,
   identifierUuid: string,
-  identifier: string,
+  identifier: string
 ) {
   const abortController = new AbortController();
   return openmrsFetch(
@@ -250,13 +251,13 @@ export async function updatePatientIdentifier(
       },
       signal: abortController.signal,
       body: { identifier },
-    },
+    }
   );
 }
 
 export async function deletePatientIdentifier(
   patientUuid: string,
-  patientIdentifierUuid: string,
+  patientIdentifierUuid: string
 ) {
   const abortController = new AbortController();
   return openmrsFetch(
@@ -267,6 +268,6 @@ export async function deletePatientIdentifier(
         "Content-Type": "application/json",
       },
       signal: abortController.signal,
-    },
+    }
   );
 }
