@@ -8,10 +8,11 @@
     border: 1px solid;
     @include brand-01(border-color);
     flex: 1;
-    min-width: max-content;
+    min-width: 160px;
     height: 154px;
     padding: 0 spacing.$spacing-05;
     display: flex;
+    margin-bottom: 20px;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -25,11 +26,12 @@
     @include type.type-style("body-compact-02");
     font-size: 1.2rem;
     color:  #666666;
-    padding-top: spacing.$spacing-06;
+    padding-top: spacing.$spacing-03;
+    text-overflow: ellipsis;
 }
 
 .count {
-    @include type.type-style("heading-07");
+    @include type.type-style("heading-05");
     color: colors.$gray-100;
     padding-bottom: spacing.$spacing-05;
     display: flex;
@@ -40,10 +42,10 @@
     &> .icon {
       background-color: white;
       color: white;
-      height: 4rem;
-      width: 4rem;
+      height: 3rem;
+      width: 3rem;
       border-radius: 50%;
-      padding: spacing.$spacing-05;
+      padding: spacing.$spacing-03;
       top: 0.9rem;
       left: 8.5rem;
       display: flex;

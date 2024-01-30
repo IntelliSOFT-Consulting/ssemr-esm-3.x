@@ -76,7 +76,7 @@ const EnrolledOnArtChart = ({ options }) => {
   return (
     <div>
       <div>
-        <button
+        {/* <button
           onClick={() => setSelectedRange("week")}
           disabled={selectedRange === "week"}
         >
@@ -93,9 +93,9 @@ const EnrolledOnArtChart = ({ options }) => {
           disabled={selectedRange === "year"}
         >
           Year
-        </button>
+        </button> */}
+        <div ref={chartRef}></div>
       </div>
-      <div ref={chartRef}></div>
     </div>
   );
 };

@@ -10,12 +10,14 @@
 }
 
 
-.dashboardCard{
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: spacing.$spacing-07;
-    row-gap: spacing.$spacing-05;
-    justify-content: space-between;
+.dashboardCard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: spacing.$spacing-05 0;
+  column-gap: spacing.$spacing-07;
+  justify-content: flex-start;
+  overflow: hidden;
 }
 
 .header {

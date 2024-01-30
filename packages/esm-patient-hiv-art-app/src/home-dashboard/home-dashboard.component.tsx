@@ -21,7 +21,7 @@ import {
 } from "@carbon/react";
 import EnrolledOnArtChart from "./charts/clients-newly-enrolled-on-art/clients-newly-enrolled-on-art.component";
 import options from "./charts/options";
-import chartData from "./charts/chartData";
+import { useDashboardData } from "../hooks/fetchAggrigateData";
 
 type HomeDashboardProps = { customIconColor?: string };
 
@@ -68,31 +68,275 @@ const HomeDashboard: React.FC<HomeDashboardProps> = () => {
   const [activeCategory, setActiveCategory] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  const { loading: newlyEnrolledLoad, count: newlyEnrolledClients } =
+    useDashboardData(
+      "newClients",
+      "newlyEnrolledClients",
+      "Newly Enrolled Clients"
+    );
+  console.log("Count for newlyEnrolledClients:", newlyEnrolledClients);
+
+  const { loading: childrenLoad, count: childrenAndAdolescentCount } =
+    useDashboardData("newClients", "newClients", "New Clients", "1-19");
+
+  const { loading: activeClientsLoad, count: activeClientsCount } =
+    useDashboardData(
+      "activeClients",
+      "activeClients",
+      "Active Clients (TX_CURR)"
+    );
+
+  const {
+    loading: LoadActiveChildren,
+    count: activeChildrenAndAdolescentCount,
+  } = useDashboardData(
+    "activeClients",
+    "activeClients",
+    "Active Clients",
+    "1-19"
+  );
+
+  const { loading: missedAppointmentsLoad, count: missedAppointment } =
+    useDashboardData(
+      "missedAppointments",
+      "missedAppointments",
+      "Missed appointments"
+    );
+
+  const {
+    loading: LoadChildrenMissedAppointments,
+    count: childrenAndAdolescentCMissedAppointmentsount,
+  } = useDashboardData(
+    "missedAppointments",
+    "missedAppointments",
+    "Missed appointments",
+    "1-19"
+  );
+
+  const { loading: interruptedTreatmentLoad, count: interruptedTreatment } =
+    useDashboardData(
+      "interruptionsInTreatments",
+      "interruptionsInTreatments",
+      "Interruptions In Treatment (lit)"
+    );
+
+  const {
+    loading: LoadChildrenInterruptionInTreatment,
+    count: childrenAndAdolescentInterruptionInTreatmentCount,
+  } = useDashboardData(
+    "interruptionsInTreatments",
+    "interruptionsInTreatments",
+    "Interruptions In Treatment (lit)",
+    "1-19"
+  );
+
+  const { loading: dueForViralLoadLoad, count: dueForViralLoad } =
+    useDashboardData("dueForVl", "dueForVl", "Due For Viral Load");
+
+  const {
+    loading: childrenDueForViralLoad,
+    count: childrenAndAdolescentDueForViralLoadCount,
+  } = useDashboardData(
+    "activeClients",
+    "activeClients",
+    "Active Clients",
+    "1-19"
+  );
+
+  const { loading: highViralLoadLoad, count: highViralLoad } = useDashboardData(
+    "highVl",
+    "highVl",
+    "High Viral Load"
+  );
+
+  const {
+    loading: childrenHighViralLoad,
+    count: childrenAndAdolescentHighViralLoadCount,
+  } = useDashboardData(
+    "activeClients",
+    "activeClients",
+    "Active Clients",
+    "1-19"
+  );
+
   const dashboardData = {
-    "Pregnant And Breastfeeding Women": [
+    "All Clients": [
       {
-        label: t("newClients", "New Clients"),
+        label: t("newlyEnrolledClients", "Newly Enrolled Clients"),
+        count: newlyEnrolledClients || 0,
+        icon: <UserFollow size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("activeClients", "Active Clients (TX_CURR)"),
+        count: activeClientsCount || 0,
+        icon: <UserAdmin size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("onAppointment", "On Appointment"),
+        count: 3,
+        icon: <EventSchedule size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("missedAppointments", "Missed appointments"),
+        count: missedAppointment || 0,
+        icon: <UnauthorizedUserAccess size={48} />,
+        color: "#FF9D00",
+      },
+      {
+        label: t(
+          "interruptionsInTreatments",
+          "Interruptions In Treatment (lit)"
+        ),
+        count: interruptedTreatment || 0,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
+      },
+      {
+        label: t("returnedToTreatment", "Returned To Treatment (TX_Rtt)"),
+        count: 12,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
+      },
+      {
+        label: t("dueForViralLoad", "Due For Viral Load"),
+        count: dueForViralLoad || 0,
+        icon: <EventSchedule size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("hivViralLoad", "High Viral Load"),
+        count: highViralLoad || 0,
+        icon: <ArrowUp size={48} />,
+        color: "#B20707",
+      },
+    ],
+    "Children And Adolescent": [
+      {
+        label: t("newClients", "Newly Enrolled Clients"),
+        count: childrenAndAdolescentCount || 0,
+        icon: <UserFollow size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("activeClients", "Active Clients (TX_CURR)"),
+        count: activeChildrenAndAdolescentCount || 0,
+        icon: <UserAdmin size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("onAppointment", "On Appointment"),
+        count: 3,
+        icon: <EventSchedule size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("missedAppointments", "Missed appointments"),
+        count: childrenAndAdolescentCMissedAppointmentsount || 0,
+        icon: <UnauthorizedUserAccess size={48} />,
+        color: "#FF9D00",
+      },
+      {
+        label: t(
+          "interruptionsInTreatments",
+          "Interruptions In Treatment (lit)"
+        ),
+        count: childrenAndAdolescentInterruptionInTreatmentCount || 0,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
+      },
+      {
+        label: t("returnedToTreatment", "Returned To Treatment (TX_Rtt)"),
+        count: 4,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
+      },
+      {
+        label: t("dueForViralLoad", "Due For Viral Load"),
+        count: childrenAndAdolescentDueForViralLoadCount || 0,
+        icon: <EventSchedule size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("hivViralLoad", "High Viral Load"),
+        count: childrenAndAdolescentHighViralLoadCount || 0,
+        icon: <ArrowUp size={48} />,
+        color: "#B20707",
+      },
+    ],
+    "Clients Returning From Interrupted treatment": [
+      {
+        label: t("newClients", "Newly Enrolled Clients"),
+        count: 0,
+        icon: <UserFollow size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("activeClients", "Active Clients (TX_CURR)"),
+        count: 0,
+        icon: <UserAdmin size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("onAppointment", "On Appointment"),
+        count: 3,
+        icon: <EventSchedule size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("missedAppointments", "Missed appointments"),
+        count: 0,
+        icon: <UnauthorizedUserAccess size={48} />,
+        color: "#FF9D00",
+      },
+      {
+        label: t(
+          "interruptionsInTreatments",
+          "Interruptions In Treatment (lit)"
+        ),
+        count: 4,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
+      },
+      {
+        label: t("returnedToTreatment", "Returned To Treatment (TX_Rtt)"),
+        count: 4,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
+      },
+      {
+        label: t("dueForViralLoad", "Due For Viral Load"),
+        count: 3,
+        icon: <EventSchedule size={48} />,
+        color: "#3271F4",
+      },
+      {
+        label: t("hivViralLoad", "High Viral Load"),
+        count: 3,
+        icon: <ArrowUp size={48} />,
+        color: "#B20707",
+      },
+    ],
+    "Returning To Treatment": [
+      {
+        label: t("newClients", "Newly Enrolled Clients"),
         count: 12,
         icon: <UserFollow size={48} />,
         color: "#3271F4",
       },
       {
-        label: t("activeClients", "Active Clients"),
+        label: t("activeClients", "Active Clients (TX_CURR)"),
         count: 10,
         icon: <UserAdmin size={48} />,
         color: "#3271F4",
       },
       {
-        label: t("dueForViralLoad", "Due For Viral Load"),
+        label: t("onAppointment", "On Appointment"),
         count: 3,
         icon: <EventSchedule size={48} />,
         color: "#3271F4",
-      },
-      {
-        label: t("hivViralLoad", "High Viral Load"),
-        count: 3,
-        icon: <ArrowUp size={48} />,
-        color: "#B20707",
       },
       {
         label: t("missedAppointments", "Missed appointments"),
@@ -101,86 +345,31 @@ const HomeDashboard: React.FC<HomeDashboardProps> = () => {
         color: "#FF9D00",
       },
       {
-        label: t("interruptedTreatments", "Interrupted Treatment"),
+        label: t(
+          "interruptionsInTreatments",
+          "Interruptions In Treatment (lit)"
+        ),
         count: 4,
         icon: <ChangeCatalog size={48} />,
         color: "#FF0000",
       },
-    ],
-    "Children And Adolescent": [
       {
-        label: t("newClients", "New Clients"),
-        count: 6,
-        icon: <UserFollow size={48} />,
-        color: "#3271F4",
-      },
-      {
-        label: t("activeClients", "Active Clients"),
-        count: 8,
-        icon: <UserAdmin size={48} />,
-        color: "#3271F4",
+        label: t("returnedToTreatment", "Returned To Treatment (TX_Rtt)"),
+        count: 4,
+        icon: <ChangeCatalog size={48} />,
+        color: "#FF0000",
       },
       {
         label: t("dueForViralLoad", "Due For Viral Load"),
-        count: 2,
+        count: 3,
         icon: <EventSchedule size={48} />,
         color: "#3271F4",
       },
       {
         label: t("hivViralLoad", "High Viral Load"),
-        count: 6,
+        count: 3,
         icon: <ArrowUp size={48} />,
         color: "#B20707",
-      },
-      {
-        label: t("missedAppointments", "Missed appointments"),
-        count: 6,
-        icon: <UnauthorizedUserAccess size={48} />,
-        color: "#FF9D00",
-      },
-      {
-        label: t("interruptedTreatments", "Interrupted Treatment"),
-        count: 2,
-        icon: <ChangeCatalog size={48} />,
-        color: "#FF0000",
-      },
-    ],
-    "Clients Returning From Interrupted treatment": [
-      {
-        label: t("newClients", "New Clients"),
-        count: 7,
-        icon: <UserFollow size={48} />,
-        color: "#3271F4",
-      },
-      {
-        label: t("activeClients", "Active Clients"),
-        count: 10,
-        icon: <UserAdmin size={48} />,
-        color: "#3271F4",
-      },
-      {
-        label: t("dueForViralLoad", "Due For Viral Load"),
-        count: 31,
-        icon: <EventSchedule size={48} />,
-        color: "#3271F4",
-      },
-      {
-        label: t("hivViralLoad", "High Viral Load"),
-        count: 22,
-        icon: <ArrowUp size={48} />,
-        color: "#B20707",
-      },
-      {
-        label: t("missedAppointments", "Missed appointments"),
-        count: 42,
-        icon: <UnauthorizedUserAccess size={48} />,
-        color: "#FF9D00",
-      },
-      {
-        label: t("interruptedTreatments", "Interrupted Treatment"),
-        count: 23,
-        icon: <ChangeCatalog size={48} />,
-        color: "#FF0000",
       },
     ],
   };
@@ -212,11 +401,11 @@ const HomeDashboard: React.FC<HomeDashboardProps> = () => {
           fontWeight: "bold",
         }}
       >
-        <div className={styles.titleContainer}>
+        {/* <div className={styles.titleContainer}>
           <p className={styles.subTitle}>
             {t("subPopulations", "Sub Populations")}
           </p>
-        </div>
+        </div> */}
       </section>
       <Grid condensed>
         <Column lg={16} md={8} sm={4}>

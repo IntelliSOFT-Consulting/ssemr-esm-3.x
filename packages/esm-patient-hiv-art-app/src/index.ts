@@ -18,7 +18,7 @@ export const importTranslation = require.context(
   "../translations",
   false,
   /.json$/,
-  "lazy",
+  "lazy"
 );
 
 export function startupApp() {
@@ -27,12 +27,12 @@ export function startupApp() {
 
 export const rootHome = getAsyncLifecycle(
   () => import("./root.component"),
-  options,
+  options
 );
 
 export const hivArtTrendsDashboard = getAsyncLifecycle(
   () => import("./dashboard/hiv-art-dashboard.component"),
-  options,
+  options
 );
 
 export const homeHIVCareAndARTLink =
@@ -46,5 +46,5 @@ export const hivArtTreatmentDashboardLink =
       ...dashboardMeta,
       moduleName,
     }),
-    options,
+    options
   );
