@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "pages": [],
+  "extensions": [
+    {
+      "name": "care-panel-patient-summary",
+      "component": "carePanelPatientSummary",
+      "slot": "patient-chart-care-panel-dashboard-slot",
+      "order": 10,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "care-panel-summary-dashboard-link",
+      "component": "carePanelSummaryDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "order": 11,
+      "meta": {
+        "columns": 1,
+        "columnSpan": 1,
+        "slot": "patient-chart-care-panel-dashboard-slot",
+        "title": "Care panel",
+        "path": "Care panel"
+      }
+    },
+    {
+      "name": "patient-program-summary",
+      "slot": "patient-chart-summary-dashboard-slot",
+      "component": "patientProgramSummary",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "patient-history-summary",
+      "slot": "patient-chart-summary-dashboard-slot",
+      "component": "patientHistory",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "more-patient-summary",
+      "slot": "patient-chart-summary-dashboard-slot",
+      "component": "patientData",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "linkage-to-chw-summary",
+      "slot": "patient-chart-summary-dashboard-slot",
+      "component": "linkageToCHW",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "weight-graph",
+      "slot": "patient-chart-summary-dashboard-slot",
+      "component": "weightGraph",
+      "order": 1,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "delete-regimen-confirmation-dialog",
+      "component": "deleteRegimenConfirmationDialog"
+    }
+  ]
+}
