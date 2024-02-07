@@ -25,16 +25,16 @@
   "keywords": [
     "openmrs"
   ],
-  "homepage": "https://github.com/donaldkibet/ssemr-esm-patient-dashboard#readme",
+  "homepage": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-registration-app#readme",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/donaldkibet/ssemr-esm-patient-dashboard.git"
+    "url": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-registration-appt"
   },
   "bugs": {
-    "url": "https://github.com/donaldkibet/ssemr-esm-patient-dashboard/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/ssemr-esm-3.x/tree/main/packages/esm-patient-registration-app/issues"
   },
   "dependencies": {
     "@carbon/charts-react": "^1.5.2",

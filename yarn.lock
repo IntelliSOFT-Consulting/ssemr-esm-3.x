@@ -5001,14 +5001,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ssemr/esm-patient-panel-app@workspace:packages/esm-patient-panel-app":
+"@ssemr/esm-patient-panel-app@workspace:packages/esm-care-panel-app":
   version: 0.0.0-use.local
-  resolution: "@ssemr/esm-patient-panel-app@workspace:packages/esm-patient-panel-app"
+  resolution: "@ssemr/esm-patient-panel-app@workspace:packages/esm-care-panel-app"
   dependencies:
     "@carbon/react": ^1.42.1
     "@openmrs/esm-patient-common-lib": next
     lodash-es: ^4.17.15
     react-to-print: ^2.14.13
+    swr: 2.x
     webpack: ^5.74.0
   peerDependencies:
     "@openmrs/esm-framework": 5.x
@@ -5016,7 +5017,6 @@ __metadata:
     react: ^18.1.0
     react-i18next: 11.x
     react-router-dom: 6.x
-    swr: 2.x
   languageName: unknown
   linkType: soft
 

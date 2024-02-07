@@ -11,7 +11,6 @@ import LastArtVisitSummary from "../last-arv-visit-summary/last-arv-visit-summar
 import first from "lodash/first";
 import sortBy from "lodash/sortBy";
 import { ErrorState } from "@openmrs/esm-framework";
-import CarePrograms from "../care-programs/care-programs.component";
 
 interface CarePanelProps {
   patientUuid: string;

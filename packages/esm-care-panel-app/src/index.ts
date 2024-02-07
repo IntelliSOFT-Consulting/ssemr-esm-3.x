@@ -12,7 +12,6 @@ import {
 import carePanelComponent from "./patient-summary-widget/care-panel.component";
 import patientHistoryComponent from "./patient-history-widget/patient-history-panel.component";
 import carePanelPatientSummaryComponent from "./patient-summary/patient-summary.component";
-import careProgramsComponent from "./care-programs/care-programs.component";
 import deleteRegimenConfirmationDialogComponent from "./regimen-editor/delete-regimen-modal.component";
 import regimenFormComponent from "./regimen-editor/regimen-form.component";
 import PatientDataComponent from "./more-patient-data-widget/more-patient-data-panel.component";
@@ -66,11 +65,6 @@ export const linkageToCHW = getSyncLifecycle(
 );
 
 export const weightGraph = getSyncLifecycle(WeightGraphComponent, options);
-
-export const patientCareProgram = getSyncLifecycle(careProgramsComponent, {
-  moduleName: "patient-care-programs",
-  featureName: "care-programs",
-});
 
 registerWorkspace({
   name: "patient-regimen-workspace",
