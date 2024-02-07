@@ -238,16 +238,14 @@ const RegimenForm: React.FC<RegimenFormProps> = ({
               });
               setIsSubmitting(false);
               mutate(
-                `/ws/rest/v1/kenyaemr/currentProgramDetails?patientUuid=${patientUuid}`
+                `/ws/rest/v1/currentProgramDetails?patientUuid=${patientUuid}`
+              );
+              mutate(`/ws/rest/v1/patientSummary?patientUuid=${patientUuid}`);
+              mutate(
+                `/ws/rest/v1/regimenHistory?patientUuid=${patientUuid}&category=${category}`
               );
               mutate(
-                `/ws/rest/v1/kenyaemr/patientSummary?patientUuid=${patientUuid}`
-              );
-              mutate(
-                `/ws/rest/v1/kenyaemr/regimenHistory?patientUuid=${patientUuid}&category=${category}`
-              );
-              mutate(
-                `/ws/rest/v1/kenyaemr/lastRegimenEncounter?patientUuid=${patientUuid}&category=${category}`
+                `/ws/rest/v1/lastRegimenEncounter?patientUuid=${patientUuid}&category=${category}`
               );
 
               closeWorkspace();
