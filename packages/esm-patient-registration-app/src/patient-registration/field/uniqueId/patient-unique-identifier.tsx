@@ -1,23 +1,16 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Tile,
-  ComboBox,
   Layer,
-  Button,
-  Search,
-  InlineLoading,
   Select,
   SelectItem,
   TextInput,
+  Button,
 } from "@carbon/react";
-import { Input } from "../../input/basic-input/input/input.component";
-import { SelectInput } from "../../input/basic-input/select/select-input.component";
 import styles from "./patient-unique-identifier.scss";
-import { showToast } from "@openmrs/esm-framework";
-import { FormikProps } from "formik";
-import { FormikValues } from "formik";
+import { FormikProps, FormikValues } from "formik";
 import { facilities } from "./assets/identifier-assets";
 
 interface PatientIdentifierProps {
@@ -28,17 +21,52 @@ interface PatientIdentifierProps {
   light: boolean;
   disabled?: boolean;
   placeholder?: string;
-  value?: string;
+  value: string;
 }
-interface InputProps {
+
+interface CustomInputProps {
+  value: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
   id: string;
   name: string;
   labelText: string;
   light: boolean;
-  disabled?: boolean;
-  placeholder?: string;
-  value?: string;
+  required?: boolean;
 }
+
+const CustomInput: React.FC<CustomInputProps> = ({
+  value,
+  onChange,
+  onBlur,
+  id,
+  name,
+  labelText,
+  light,
+  required = false,
+}) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
+  return (
+    <TextInput
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      onKeyDown={handleKeyDown}
+      id={id}
+      name={name}
+      labelText={labelText}
+      light={light}
+      required={required}
+    />
+  );
+};
+
+export { CustomInput };
 
 export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const { t } = useTranslation();
@@ -52,13 +80,6 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   >([""]);
 
   const [combinedValue, setCombinedValue] = useState<string>("");
-
-  const Input = (props) => {
-    const handleChange = (event) => {
-      props.onChange(event);
-    };
-    return <TextInput {...props} onChange={handleChange} />;
-  };
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     console.log("event", event);
@@ -82,6 +103,10 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
     setArtNumber(newArtNumber);
   };
 
+  const handleBlur = () => {
+    console.log("Input blurred");
+  };
+
   useEffect(() => {
     setCombinedValue(`${selectedFacility}${artNumber}`);
   }, [selectedFacility, artNumber]);
@@ -92,6 +117,29 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
       setfacilitiesForSelectedState(facilities[0][selectedState]);
     }
   }, [selectedState]);
+
+  const handleSubmit = () => {
+    const data = {
+      identifiers: [
+        {
+          combinedValue: combinedValue,
+          identifierType: "e6baf185-38ed-4815-9476-f98d2cc2b331",
+          preferred: true,
+        },
+      ],
+    };
+
+    fetch("/openmrs/ws/rest/v1/patient", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  };
 
   return (
     <div id="patientIdentifier">
@@ -134,9 +182,10 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
             </Select>
           </Layer>
           <Layer>
-            <Input
+            <CustomInput
               value={artNumber}
               onChange={handleArtNumberChange}
+              onBlur={handleBlur}
               id="artNumber"
               name="artNumber"
               labelText={t("number", "Number")}
