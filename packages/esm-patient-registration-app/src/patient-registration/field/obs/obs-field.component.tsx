@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import classNames from "classnames";
-import { Field } from "formik";
+import { Field, useField } from "formik";
 import { useTranslation } from "react-i18next";
-import { InlineNotification, Layer, Select, SelectItem } from "@carbon/react";
+import {
+  InlineNotification,
+  Layer,
+  Select,
+  SelectItem,
+  DatePicker,
+  DatePickerInput,
+} from "@carbon/react";
 import { useConfig } from "@openmrs/esm-framework";
 import { ConceptResponse } from "../../patient-registration.types";
 import { FieldDefinition, RegistrationConfig } from "../../../config-schema";
 import { Input } from "../../input/basic-input/input/input.component";
 import { useConcept, useConceptAnswers } from "../field.resource";
 import styles from "./../field.scss";
+import { generateFormatting } from "../../date-util";
+import { PatientRegistrationContext } from "../../patient-registration-context";
 
 export interface ObsFieldProps {
   fieldDefinition: FieldDefinition;
@@ -17,12 +26,16 @@ export interface ObsFieldProps {
 export function ObsField({ fieldDefinition }: ObsFieldProps) {
   const { data: concept, isLoading } = useConcept(fieldDefinition.uuid);
   const config = useConfig() as RegistrationConfig;
+  const [date, dateMeta] = useField("date");
+  const { setFieldValue } = useContext(PatientRegistrationContext);
+
+  const { format, dateFormat } = generateFormatting(["d", "m", "Y"], "/");
 
   if (!config.registrationObs.encounterTypeUuid) {
     console.error(
       "The registration form has been configured to have obs fields, " +
         "but no registration encounter type has been configured. Obs fields " +
-        "will not be displayed.",
+        "will not be displayed."
     );
     return null;
   }
@@ -46,6 +59,19 @@ export function ObsField({ fieldDefinition }: ObsFieldProps) {
           concept={concept}
           label={fieldDefinition.label}
           required={fieldDefinition.validation.required}
+        />
+      );
+    case "Date":
+      return (
+        <DateObsField
+          concept={concept}
+          label={fieldDefinition.label}
+          required={fieldDefinition.validation.required}
+          dateFormat={dateFormat}
+          date={date}
+          dateMeta={dateMeta}
+          setFieldValue={setFieldValue}
+          format={format}
         />
       );
     case "Coded":
@@ -121,6 +147,68 @@ function TextObsField({
   );
 }
 
+interface DateObsFieldProps {
+  concept: ConceptResponse;
+  label: string;
+  required?: boolean;
+  dateFormat: string;
+  date: any;
+  dateMeta: any;
+  setFieldValue: any;
+  format: any;
+}
+
+function DateObsField({
+  concept,
+  label,
+  required,
+  dateFormat,
+  date,
+  dateMeta,
+  setFieldValue,
+  format,
+}: DateObsFieldProps) {
+  const { t } = useTranslation();
+  const today = new Date();
+
+  const onDateChange = useCallback(
+    (selectedDate: Date) => {
+      setFieldValue("date", selectedDate);
+    },
+    [setFieldValue]
+  );
+
+  const fieldName = `obs.${concept.uuid}`;
+  return (
+    <div
+      className={classNames(styles.customField, styles.halfWidthInDesktopView)}
+    >
+      <Field name={fieldName}>
+        {({ field, form: { touched, errors }, meta }) => {
+          return (
+            <DatePicker
+              dateFormat={dateFormat}
+              datePickerType="single"
+              onChange={onDateChange}
+              maxDate={format(today)}
+            >
+              <DatePickerInput
+                id={fieldName}
+                labelText={label ?? concept.display}
+                required={required}
+                invalid={errors[fieldName] && touched[fieldName]}
+                invalidText={dateMeta.error && t(dateMeta.error)}
+                value={format(date.value)}
+                {...field}
+              />
+            </DatePicker>
+          );
+        }}
+      </Field>
+    </div>
+  );
+}
+
 interface NumericObsFieldProps {
   concept: ConceptResponse;
   label: string;
@@ -173,7 +261,7 @@ function CodedObsField({
 
   const fieldName = `obs.${concept.uuid}`;
   const fieldDefinition = config?.fieldDefinitions?.filter(
-    (def) => def.type === "obs" && def.uuid === concept.uuid,
+    (def) => def.type === "obs" && def.uuid === concept.uuid
   )[0];
 
   return (
