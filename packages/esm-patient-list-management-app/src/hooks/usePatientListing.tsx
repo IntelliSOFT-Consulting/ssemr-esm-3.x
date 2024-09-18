@@ -102,7 +102,7 @@ export const usePatientListing = () => {
       selector: (row) => row.initiationDate,
     },
     {
-      name: "Appointment Date",
+      name: "Last Refill Date",
       selector: (row) => row.lastRefillDate,
     },
   ];
