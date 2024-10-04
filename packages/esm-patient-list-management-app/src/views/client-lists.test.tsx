@@ -75,6 +75,6 @@ describe("Lists Dashboard", () => {
 
 		render(<ListsDashboard />)
 
-		expect(screen.getByText(/Patient with this Unique ART Number does not exist/i)).toBeInTheDocument();
+		expect(screen.getByText(/This patient does not exist in the system/i)).toBeInTheDocument();
 	})
 })
