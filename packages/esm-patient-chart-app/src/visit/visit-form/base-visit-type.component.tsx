@@ -9,6 +9,7 @@ import { PatientChartPagination } from '@openmrs/esm-patient-common-lib';
 import { useLayoutType, usePagination, type VisitType } from '@openmrs/esm-framework';
 import { type VisitFormData } from './visit-form.resource';
 import styles from './visit-type-overview.scss';
+import { TextInput } from '@carbon/react';
 
 interface BaseVisitTypeProps {
   visitTypes: Array<VisitType>;
@@ -19,6 +20,8 @@ const BaseVisitType: React.FC<BaseVisitTypeProps> = ({ visitTypes }) => {
   const isTablet = useLayoutType() === 'tablet';
   const [searchTerm, setSearchTerm] = useState<string>('');
   const { control } = useFormContext<VisitFormData>();
+  const [isOtherSelected, setIsOtherSelected] = useState<boolean>(false);
+  const [otherText, setOtherText] = useState<string>('');
 
   const searchResults = useMemo(() => {
     if (!isEmpty(searchTerm)) {
@@ -32,58 +35,83 @@ const BaseVisitType: React.FC<BaseVisitTypeProps> = ({ visitTypes }) => {
 
   const { results, currentPage, goTo } = usePagination(searchResults, 5);
 
+  const otherSelected = (value: string) => {
+    if (value === '5532b8be-2b98-4bff-997b-66e9873a95bd') {
+      setIsOtherSelected(true);
+    } else {
+      setIsOtherSelected(false);
+    }
+  }
+
   return (
-    <div className={classNames(styles.visitTypeOverviewWrapper, isTablet ? styles.tablet : styles.desktop)}>
-      {visitTypes.length ? (
-        <>
-          {isTablet ? (
-            <Layer>
+    <>
+      <div className={classNames(styles.visitTypeOverviewWrapper, isTablet ? styles.tablet : styles.desktop)}>
+        {visitTypes.length ? (
+          <>
+            {isTablet ? (
+              <Layer>
+                <Search
+                  onChange={(event) => handleSearch(event.target.value)}
+                  placeholder={t('searchForAVisitType', 'Search for a visit type')}
+                  labelText=""
+                />
+              </Layer>
+            ) : (
               <Search
                 onChange={(event) => handleSearch(event.target.value)}
                 placeholder={t('searchForAVisitType', 'Search for a visit type')}
                 labelText=""
               />
-            </Layer>
-          ) : (
-            <Search
-              onChange={(event) => handleSearch(event.target.value)}
-              placeholder={t('searchForAVisitType', 'Search for a visit type')}
-              labelText=""
-            />
-          )}
-
-          <Controller
-            name="visitType"
-            control={control}
-            defaultValue={results?.length === 1 ? results[0].uuid : ''}
-            render={({ field: { onChange, value } }) => (
-              <RadioButtonGroup
-                className={styles.radioButtonGroup}
-                orientation="vertical"
-                onChange={onChange}
-                name="radio-button-group"
-                valueSelected={value}
-              >
-                {results.map(({ uuid, display, name }) => (
-                  <RadioButton key={uuid} className={styles.radioButton} id={name} labelText={display} value={uuid} />
-                ))}
-              </RadioButtonGroup>
             )}
-          />
-          <div className={styles.paginationContainer}>
-            <PatientChartPagination
-              pageNumber={currentPage}
-              totalItems={visitTypes?.length}
-              currentItems={results.length}
-              pageSize={5}
-              onPageNumberChange={({ page }) => goTo(page)}
+
+            <Controller
+              name="visitType"
+              control={control}
+              defaultValue={results?.length === 1 ? results[0].uuid : ''}
+              render={({ field: { onChange, value } }) => (
+                <RadioButtonGroup
+                  className={styles.radioButtonGroup}
+                  orientation="vertical"
+                  onChange={ (val) => {
+                    onChange(val);
+                    otherSelected(val);
+                  }}
+                  name="radio-button-group"
+                  valueSelected={value}
+                >
+                  {results.map(({ uuid, display, name }) => (
+                    <RadioButton key={uuid} className={styles.radioButton} id={name} labelText={display} value={uuid} />
+                  ))}
+                </RadioButtonGroup>
+              )}
             />
-          </div>
-        </>
-      ) : (
-        <StructuredListSkeleton />
+            <div className={styles.paginationContainer}>
+              <PatientChartPagination
+                pageNumber={currentPage}
+                totalItems={visitTypes?.length}
+                currentItems={results.length}
+                pageSize={5}
+                onPageNumberChange={({ page }) => goTo(page)}
+              />
+            </div>
+          </>
+        ) : (
+          <StructuredListSkeleton />
+        )}
+      </div>
+
+      {isOtherSelected && (
+        <Layer>
+          <TextInput
+            id="other-text-input"
+            labelText={t('specifyOther', 'Please specify')}
+            value={otherText}
+            onChange={(event) => setOtherText(event.target.value)}
+            className={styles.otherTextInput}
+          />
+        </Layer>
       )}
-    </div>
+    </>
   );
 };
 
