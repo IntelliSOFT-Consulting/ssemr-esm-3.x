@@ -6,6 +6,10 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  background-image: url('./Back\ ground.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .center {
@@ -115,6 +119,10 @@
   left: 0;
 }
 
+.arrowIcon {
+  color: white;
+}
+
 .footer {
   margin-top: 6.75rem;
   display: flex;
@@ -122,6 +130,9 @@
   column-gap: 2rem;
   width: 23rem;
   align-items: center;
+  background-color: white;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .loader {

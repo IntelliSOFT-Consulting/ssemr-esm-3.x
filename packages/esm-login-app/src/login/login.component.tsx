@@ -15,7 +15,7 @@ import {
 import { type ConfigSchema } from '../config-schema';
 import Logo from '../logo.component';
 import styles from './login.scss';
-import primaryLogo from './login-icon.svg';
+import logo from './SSEMR.svg'
 
 export interface LoginReferrer {
   referrer?: string;
@@ -270,7 +270,7 @@ const Login: React.FC = () => {
           <div className="card">
             <p className={styles.poweredByTxt}>{t('poweredBy', 'Powered by')}</p>
             <div>
-            <img src={primaryLogo} alt="Powered By Logo" className={styles.poweredByLogo} />
+            <img src={logo} alt="Powered By Logo" className={styles.poweredByLogo} />
             </div>
           </div>
           <div className={styles.divider}></div>

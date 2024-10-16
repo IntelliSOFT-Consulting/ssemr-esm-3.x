@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-login-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MPL-2.0",
   "description": "The login microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-login-app.js",
@@ -58,5 +58,5 @@
     "@types/uuid": "^9.0.4",
     "webpack": "^5.88.2"
   },
-  "gitHead": "5435bbd9714d1fbbdbcaaa1ac6067838b16b75cc"
+  "gitHead": "c638175319547c480fea4322356d593e58a8e068"
 }
