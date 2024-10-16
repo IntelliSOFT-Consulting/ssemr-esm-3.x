@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./vl-summary.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, useLayoutType } from "@openmrs/esm-framework";
-import { StructuredListSkeleton, Tile } from "@carbon/react";
+import { StructuredListSkeleton, Tile, Tag } from "@carbon/react";
 import useObservationData from "../hooks/useObservationData";
 import { RegimenType } from "../types";
 export interface ProgramSummaryProps {
@@ -83,16 +83,9 @@ const ViralLoadlHistory: React.FC<ProgramSummaryProps> = ({ patientUuid }) => {
                 "Eligibility For Viral Load Sample Collection"
               )}
             </p>
-
-            <p
-              className={
-                vlEligibilityResult === "Eligible"
-                  ? styles.greenChip
-                  : styles.redChip
-              }
-            >
+            <Tag type={vlEligibilityResult === "Eligible" ? "magenta" : "green"}>
               {vlEligibilityResult}
-            </p>
+            </Tag>
           </div>
           <div className={styles.content}></div>
           {vlEligibilityResult === "Eligible" && (

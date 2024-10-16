@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-summary-app",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Patient Summary and Downloadable Patient Summary microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-summary-app.js",
   "main": "src/index.ts",
@@ -56,5 +56,5 @@
     "cross-env": "^7.0.3",
     "webpack": "^5.74.0"
   },
-  "gitHead": "435b9e11b3b117fce42ddb1c201c6dc2f3424d6c"
+  "gitHead": "543fe323c921c32fd0f0f90adb15657913def6e2"
 }
