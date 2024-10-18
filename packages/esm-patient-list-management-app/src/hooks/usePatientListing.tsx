@@ -21,6 +21,8 @@ export const usePatientListing = (initialCategory="allClients") => {
   });
   const [category, setCategory] = React.useState(initialCategory);
 
+  const abortControllerRef = React.useRef(null)
+
   const startDate = `1970-01-01`;
 
   const endDate = `${new Date().getFullYear()}-${
@@ -148,6 +150,13 @@ export const usePatientListing = (initialCategory="allClients") => {
   };
 
   const getClients = async ({ currentPage, pageSize }) => {
+    if(abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+
     try {
       if (currentPage === 0) setLoading(true);
 
@@ -155,7 +164,9 @@ export const usePatientListing = (initialCategory="allClients") => {
 
       setCurrentPaginationState((prev) => ({ ...prev, done: false }));
 
-      const { data } = await openmrsFetch(url);
+      const { data } = await openmrsFetch(url, {
+        signal: controller.signal
+      });
       if (data?.results?.length > 0)
         setTableData((prev) => [...prev, ...data.results]);
 
