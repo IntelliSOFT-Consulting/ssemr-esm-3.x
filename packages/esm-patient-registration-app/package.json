@@ -1,6 +1,6 @@
 {
   "name": "@ssemr/esm-patient-registration-app",
-  "version": "1.6.8",
+  "version": "1.7.0",
   "description": "Patient registration microfrontend for the OpenMRS SPA",
   "browser": "dist/ssemr-esm-patient-registration-app.js",
   "main": "src/index.ts",
@@ -58,5 +58,5 @@
     "cross-env": "^7.0.3",
     "webpack": "^5.74.0"
   },
-  "gitHead": "0bd844e4fcbe0f9b5589f27d3e86d34966f65ad3"
+  "gitHead": "cc57db494b565e81eba7d3ddea5233010a5a5475"
 }

@@ -28,3 +28,18 @@ export const getStateAndFacilityByCode = (code) => {
   }
   return null;
 };
+// This is a helper to calculate the next unique ART number based on existing numbers
+export const getNextARTNumber = (
+  artNumbers: string[],
+  facilities: string
+): string => {
+  const suffix = artNumbers
+    .map((id) => parseInt(id.split("/").at(-1)))
+    .filter((num) => !isNaN(num));
+
+  const maxSuffix = suffix.length > 0 ? Math.max(...suffix) : 0;
+
+  const nextSuffix = String(maxSuffix + 1).padStart(5, "0");
+
+  return `${facilities}/${nextSuffix}`;
+};

@@ -18,9 +18,11 @@ import { ResourcesContext } from "../../../offline.resources";
 import {
   findFacilityMetadata,
   getStateAndFacilityByCode,
+  getNextARTNumber,
 } from "../../helpers/findFacilityMetadata";
 import { PatientRegistrationContext } from "../../patient-registration-context";
 import { extractCode, isValidART } from "../../helpers/findValidART";
+import { useGetFilteredPatients } from "../field.resource";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -41,6 +43,7 @@ interface CustomInputProps {
   labelText: string;
   light: boolean;
   required?: boolean;
+  disabled?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -51,6 +54,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   labelText,
   light,
   required = false,
+  disabled = false,
 }) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -68,6 +72,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       labelText={labelText}
       light={light}
       required={required}
+      disabled={disabled}
     />
   );
 };
@@ -101,6 +106,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [artNumber, setArtNumber] = useState<string>(
     contextArt.identifierValue.split("/").at(-1)
   );
+  const { data: filteredPatients } = useGetFilteredPatients(selectedFacility);
 
   useEffect(() => {
     if (isValidART(contextArt.identifierValue)) {
@@ -124,6 +130,16 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [transferIn, setTransferIn] = useState(false);
 
   const [combinedValue, setCombinedValue] = useState<string>("");
+
+  const artNumbers = filteredPatients
+    ?.flatMap((patient) =>
+      patient.identifiers
+        .filter(
+          (identifier) => identifier.identifierType === "Unique ART Number"
+        )
+        .map((id) => id.identifier)
+    )
+    .filter((art) => art?.startsWith(selectedFacility));
 
   const location = currentSession?.sessionLocation?.display;
 
@@ -168,8 +184,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   };
 
   useEffect(() => {
-    if (!inEditMode)
-      getCurrentLocation();
+    if (!inEditMode) getCurrentLocation();
   }, [transferIn]);
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -193,17 +208,27 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   };
 
   useEffect(() => {
-    const value = `${transferIn ? "TI-" : ""}${selectedFacility}${artNumber}`;
-
-    setCombinedValue(value);
-    changeART(value);
-  }, [selectedFacility, artNumber, transferIn]);
+    if (!transferIn && selectedFacility && artNumbers) {
+      const nextArt = getNextARTNumber(artNumbers, selectedFacility);
+      setArtNumber(nextArt.split("/")[3]);
+    }
+  }, [selectedFacility, artNumbers, transferIn]);
 
   useEffect(() => {
     if (selectedState) {
       setfacilitiesForSelectedState(facilities[0][selectedState]);
     }
   }, [selectedState]);
+
+  useEffect(() => {
+    if (selectedFacility && artNumber) {
+      const combined = `${selectedFacility}${artNumber}`;
+      setCombinedValue(combined);
+      changeART(combined, contextArt.identifierUuid);
+    } else {
+      setCombinedValue("");
+    }
+  }, [selectedFacility, artNumber]);
 
   return (
     <div>
@@ -270,6 +295,7 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
                     labelText={t("number", "Number")}
                     light={true}
                     required={true}
+                    disabled={!transferIn && !inEditMode}
                   />
                 </Layer>
               </Tile>
