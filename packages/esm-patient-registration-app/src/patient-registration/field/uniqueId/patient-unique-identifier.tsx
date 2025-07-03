@@ -1,4 +1,10 @@
-import React, { useState, useEffect, ChangeEvent, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  useContext,
+  useMemo,
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
   Tile,
@@ -18,9 +24,11 @@ import { ResourcesContext } from "../../../offline.resources";
 import {
   findFacilityMetadata,
   getStateAndFacilityByCode,
+  getNextARTNumber,
 } from "../../helpers/findFacilityMetadata";
 import { PatientRegistrationContext } from "../../patient-registration-context";
 import { extractCode, isValidART } from "../../helpers/findValidART";
+import { useGetFilteredPatients } from "../field.resource";
 
 interface PatientIdentifierProps {
   props: FormikProps<FormikValues>;
@@ -101,6 +109,8 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [artNumber, setArtNumber] = useState<string>(
     contextArt.identifierValue.split("/").at(-1)
   );
+  const [manualEdit, setManualEdit] = useState<boolean>(false);
+  const { data: filteredPatients } = useGetFilteredPatients(selectedFacility);
 
   useEffect(() => {
     if (isValidART(contextArt.identifierValue)) {
@@ -124,6 +134,16 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   const [transferIn, setTransferIn] = useState(false);
 
   const [combinedValue, setCombinedValue] = useState<string>("");
+
+  const artNumbers = filteredPatients
+    ?.flatMap((patient) =>
+      patient.identifiers
+        .filter(
+          (identifier) => identifier.identifierType === "Unique ART Number"
+        )
+        .map((id) => id.identifier)
+    )
+    .filter((art) => art?.startsWith(selectedFacility));
 
   const location = currentSession?.sessionLocation?.display;
 
@@ -168,14 +188,14 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   };
 
   useEffect(() => {
-    if (!inEditMode)
-      getCurrentLocation();
+    if (!inEditMode) getCurrentLocation();
   }, [transferIn]);
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = event.target.value;
     setSelectedState(newState);
     setSelectedFacility("");
+    setManualEdit(false);
   };
 
   const handleFacilityChange = (
@@ -183,27 +203,47 @@ export const PatientArtNumber: React.FC<PatientIdentifierProps> = () => {
   ) => {
     const newFacility = event.target.value;
     setSelectedFacility(newFacility);
+    setManualEdit(false);
   };
 
   const handleArtNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newArtNumber = event.target.value;
+    setManualEdit(true);
     setArtNumber(newArtNumber);
   };
 
-  useEffect(() => {
-    const value = `${transferIn ? "TI-" : ""}${selectedFacility}${artNumber}`;
+  const nextUANNumber = useMemo(() => {
+    if (!transferIn && selectedFacility && artNumbers) {
+      return getNextARTNumber(artNumbers, selectedFacility).split("/")[3];
+    }
+    return "";
+  }, [selectedFacility, artNumbers, transferIn]);
 
-    setCombinedValue(value);
-    changeART(value);
-  }, [selectedFacility, artNumber, transferIn]);
+  useEffect(() => {
+    if (nextUANNumber && !manualEdit) {
+      setArtNumber(nextUANNumber);
+    }
+  }, [nextUANNumber, manualEdit]);
 
   useEffect(() => {
     if (selectedState) {
       setfacilitiesForSelectedState(facilities[0][selectedState]);
     }
   }, [selectedState]);
+
+  useEffect(() => {
+    if (selectedFacility && artNumber) {
+      const combined = `${
+        transferIn ? "TI-" : ""
+      }${selectedFacility}${artNumber}`;
+      setCombinedValue(combined);
+      changeART(combined, contextArt.identifierUuid);
+    } else {
+      setCombinedValue("");
+    }
+  }, [selectedFacility, artNumber, transferIn]);
 
   return (
     <div>
